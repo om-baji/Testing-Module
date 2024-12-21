@@ -1,0 +1,16 @@
+{
+    "name": "Next.js Dev Container",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "postCreateCommand": "npm install",
+    "remoteUser": "root",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "esbenp.prettier-vscode",
+          "dbaeumer.vscode-eslint"
+        ]
+      }
+    }
+  }
