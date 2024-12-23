@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Inputs from "./Inputs";
 import ToggleGroup from "./ToggleButton";
 import Link from "next/link";
-import { OPTION } from "@/utils/types";
+import { OPTION } from "@/server/utils/types";
 
 const LoginDetails: React.FC = () => {
   const [role, setRole] = useState<OPTION>(OPTION.Teacher); 

@@ -1,4 +1,4 @@
-import { dropDownProps } from "@/utils/types";
+import { dropDownProps } from "@/server/utils/types";
 import React from "react";
 
 const dropdownOptions = [

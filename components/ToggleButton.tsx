@@ -1,5 +1,5 @@
 "use client";
-import { OPTION, ToggleGroupProps } from "@/utils/types";
+import { OPTION, ToggleGroupProps } from "@/server/utils/types";
 import React, { useState } from "react";
 
 

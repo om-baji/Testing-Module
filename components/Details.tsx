@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Inputs from './Inputs';
 import Dropdown from './Dropdown';
 import ToggleGroup from './ToggleButton';
-import { OPTION } from '@/utils/types';
+import { OPTION } from '@/server/utils/types';
 
 const Details: React.FC = () => {
     const [role, setRole] = useState<OPTION>(OPTION.Teacher)
