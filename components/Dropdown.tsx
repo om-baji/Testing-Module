@@ -7,7 +7,7 @@ const dropdownOptions = [
     { value: "option3", label: "पर्याय ३" },
 ];
 
-const Dropdown: React.FC<dropDownProps> = ({ id, label, options, placeholder, onChange, value }) => {
+const Dropdown: React.FC<dropDownProps> = ({ id, label, placeholder, onChange, value }) => {
     return (
         <div>
             <label
