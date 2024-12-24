@@ -1,6 +1,5 @@
 "use server";
 
-import { registerSchema, RegisterSchemaTypes } from "../models/registerSchema";
 import { loginSchema, loginSchemaTypes } from "../models/loginSchema";
 import prisma from "../utils/db";
 
@@ -48,63 +47,3 @@ export async function login({ username, password }: loginSchemaTypes) {
     };
   }
 }
-
-
-export async function register(data) {
-  try {
-    const validation = registerSchema.safeParse(data);
-
-    if (!validation.success) {
-      return {
-        message: "Validation failed!",
-        success: false,
-        error: validation.error.errors.map((e) => e.message).join(", "),
-      };
-    }
-
-    const { firstName, middleName, lastName, dateOfBirth, role, schoolName, email, invitationId } =
-      validation.data;
-
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (existingUser) {
-      return {
-        message: "User already exists!",
-        success: false,
-        error: "A user with the provided email already exists.",
-      };
-    }
-
-    const user = await prisma.user.create({
-      data: {
-        firstName,
-        middleName,
-        lastName,
-        dateOfBirth: new Date(dateOfBirth),
-        role,
-        schoolName,
-        email,
-        invitationId,
-      },
-    });
-
-    return {
-      message: "Registration successful!",
-      user,
-      success: true,
-      error: null,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      message: "Registration failed!",
-      success: false,
-      error: error.message || "Something went wrong",
-    };
-  }
-}
-
