@@ -1,17 +1,18 @@
-import NextAuth, { Session, SessionStrategy } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { AuthOptions, Session, SessionStrategy } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "./db";
 import { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
+import { Role } from "./types";
 
 type CredentialsType = {
   username: string;
   password: string;
 };
 
-export const authOptions = NextAuth({
+export const authOptions : AuthOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       credentials: {
         username: { type: "text", placeholder: "username" },
         password: { type: "password", placeholder: "password" },
@@ -30,7 +31,7 @@ export const authOptions = NextAuth({
             where: {
               username: credentials.username,
             },
-            select: { id: true, username: true, password: true },
+            select: { id: true, username: true, password: true, role : true },
           });
 
           if (!user) throw new Error("User not found!");
@@ -61,18 +62,20 @@ export const authOptions = NextAuth({
       if (user) {
         token.username = user.username, 
         token.id = user.id;
+        token.role = user.role as Role
       }
       return token;
     },
     async session({ session, token }): Promise<Session> {
       if (token) {
         session.user.username = token.username
-        session.user.id = token.id;
+        session.user.id = token.id
+        session.user.role = token.role
       }
       return session;
     },
   },
-});
+};
 
-export const GET = NextAuth(authOptions);
-export const POST = NextAuth(authOptions);
+
+export default NextAuth(authOptions);
