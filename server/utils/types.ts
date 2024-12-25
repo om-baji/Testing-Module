@@ -23,3 +23,8 @@ export interface ToggleGroupProps {
     selectedValue?: OPTION;
     onChange?: (value: OPTION) => void;
 }
+
+export enum Role {
+    Teacher = "Teacher",
+    Student = "Student"
+}

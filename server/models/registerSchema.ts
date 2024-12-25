@@ -1,6 +1,14 @@
 import { z } from "zod";
 
+enum Role {
+  Teacher = "Teacher",
+  Student = "Student",
+}
+
 export const registerSchema = z.object({
+  username: z.string().min(1, {
+    message: "Required Field!",
+  }),
   firstName: z.string().min(1, {
     message: "First name is required!",
   }),
@@ -8,16 +16,15 @@ export const registerSchema = z.object({
   lastName: z.string().min(1, {
     message: "Last name is required!",
   }),
-  dateOfBirth: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: "Invalid date format!",
-    }),
-  role: z.enum(["Teacher", "Student"], {
+  surname: z.string().min(1, { message: "Surname is required!" }),
+  dateOfBirth: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format!",
+  }),
+  role: z.enum([Role.Teacher, Role.Student], {
     message: "Role must be either 'Teacher' or 'Student'",
   }),
-  schoolName: z.string().min(1, {
-    message: "School name is required!",
+  schoolId: z.string().min(1, {
+    message: "School ID is required!",
   }),
   email: z.string().email({
     message: "Invalid email address!",
@@ -25,7 +32,7 @@ export const registerSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters long!",
   }),
-  invitationId: z.string().optional(),
+  invitationId: z.string(),
 });
 
 export type RegisterSchemaTypes = z.infer<typeof registerSchema>;
