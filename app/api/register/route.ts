@@ -1,3 +1,4 @@
+
 import { registerSchema } from '@/server/models/registerSchema';
 import userModel from '@/server/models/userModel';
 import { connectDb } from '@/server/utils/db';
@@ -18,7 +19,10 @@ export async function POST(req: Request) {
     invitationId,
   } = await req.json();
 
-  const slug = `${firstName}-${surname}-${dateOfBirth}-${schoolId}`.toLowerCase();
+  const slug =
+    `${firstName}-${surname}-${dateOfBirth}-${schoolId}`.toLowerCase();
+
+  await connectDb();
 
   try {
     const validationData = {
@@ -35,11 +39,14 @@ export async function POST(req: Request) {
     const validation = registerSchema.safeParse(validationData);
 
     if (!validation.success) {
-      return NextResponse.json({
-        message: "Validation failed!",
-        success: false,
-        error: validation.error.format(),
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          message: "Validation failed!",
+          success: false,
+          error: validation.error.format(),
+        },
+        { status: 400 }
+      );
     }
 
     const existingUser = await userModel.findOne({
@@ -47,19 +54,24 @@ export async function POST(req: Request) {
     })
 
     if (existingUser) {
-      return NextResponse.json({
-        message: "User already exists, login instead.",
-        success: false,
-      }, { status: 409 });
+      return NextResponse.json(
+        {
+          message: "User already exists, login instead.",
+          success: false,
+        },
+        { status: 409 }
+      );
     }
 
-    const username = `${firstName.toLowerCase()}@${Math.floor(Math.random() * 10000)}`;
+    const username = `${firstName.toLowerCase()}@${Math.floor(
+      Math.random() * 10000
+    )}`;
     const hashedPassword = await bcrypt.hash(username, 12);
-    
+
     const dateOfBirthDate = new Date(dateOfBirth + "T00:00:00Z");
 
     let userData;
-    if(email) {
+    if (email) {
       userData = {
         firstName,
         middleName,
@@ -70,10 +82,12 @@ export async function POST(req: Request) {
         schoolId,
         username,
         password: hashedPassword,
-        ...(role === ROLES.Teacher ? { 
-          email: email || null,
-          invitationId 
-        } : {}),
+        ...(role === ROLES.Teacher
+          ? {
+              email: email || null,
+              invitationId,
+            }
+          : {}),
       };
     } else {
       userData = {
@@ -88,24 +102,34 @@ export async function POST(req: Request) {
         password: hashedPassword,
       };
     }
-
+    
     console.log(userData)
     
     const result = await userModel.create(userData)
 
     await result.save()
 
-    return NextResponse.json({
-      message: "User registered successfully!",
-      user: result,
-      success: true,
-    }, { status: 201 });
+
+    return NextResponse.json(
+      {
+        message: "User registered successfully!",
+        user: result,
+        success: true,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.error('SignUp error:');
-    return NextResponse.json({
-      message: "Signup failed!",
-      success: false,
-      error: error instanceof Error ? error.message : "An error occurred, something went wrong.",
-    }, { status: 500 });
+    console.error("SignUp error:");
+    return NextResponse.json(
+      {
+        message: "Signup failed!",
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "An error occurred, something went wrong.",
+      },
+      { status: 500 }
+    );
   }
 }

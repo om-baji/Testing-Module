@@ -6,6 +6,7 @@ import userModel from "../models/userModel";
 import { connectDb } from "./db";
 import { ROLES } from "./types";
 
+
 type CredentialsType = {
   username: string;
   password: string;
@@ -35,6 +36,7 @@ export const authOptions: AuthOptions = {
             .select("_id username password role")
             .lean();
 
+
           if (!user) throw new Error("User not found!");
 
           const isValid = await bcrypt.compare(
@@ -48,6 +50,7 @@ export const authOptions: AuthOptions = {
             id: user._id.toString(),
             username: user.username as string,
             role : user.role
+
           };
         } catch (error) {
           console.warn("Authorization error");
@@ -64,6 +67,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         (token.username = user.username), (token.id = user.id);
         token.role = user.role as ROLES;
+
       }
       return token;
     },
