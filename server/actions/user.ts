@@ -1,10 +1,9 @@
 "use server";
 
-import { loginSchema, loginSchemaTypes } from "../models/loginSchema";
-import { registerSchema, RegisterSchemaTypes } from "../models/registerSchema";
-import prisma from "../utils/db";
 import bcrypt from "bcryptjs";
-import { signIn } from "next-auth/react";
+import { loginSchema, loginSchemaTypes } from "../models/loginSchema";
+import { registerSchema } from "../models/registerSchema";
+import prisma from "../utils/db";
 import { ROLES } from "../utils/types";
 
 type RegisterUserType = {
@@ -72,7 +71,6 @@ export async function login({ username, password }: loginSchemaTypes) {
     };
   }
 }
-
 export async function SignUp({
   firstName,
   middleName,
@@ -83,49 +81,34 @@ export async function SignUp({
   email,
   invitationId,
 }: RegisterUserType) {
-  const slug =
-    `${firstName}-${middleName}-${surname}-${dateOfBirth}-${schoolId}`.toLowerCase();
+  const slug = `${firstName}-${surname}-${dateOfBirth}-${schoolId}`.toLowerCase();
 
   try {
-    let validation: any;
+    // Create validation object based on role
+    const validationData = {
+      firstName,
+      middleName,
+      surname,
+      slug,
+      dateOfBirth,
+      role,
+      schoolId,
+      ...(role === ROLES.Teacher ? { email, invitationId } : {}),
+    };
 
-    if (role === ROLES.Teacher) {
-      validation = registerSchema.safeParse({
-        firstName,
-        middleName,
-        surname,
-        slug,
-        dateOfBirth,
-        role,
-        schoolId,
-        email: email,
-        invitationId: invitationId,
-      });
-    } else {
-      validation = registerSchema.safeParse({
-        firstName,
-        middleName,
-        surname,
-        slug,
-        dateOfBirth,
-        role,
-        schoolId,
-      });
-    }
+    const validation = registerSchema.safeParse(validationData);
 
     if (!validation.success) {
       return {
         message: "Validation failed!",
         success: false,
-        error: validation.error.message,
+        error: validation.error.format(),
         status: 400,
       };
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: {
-        slug,
-      },
+      where: { slug },
     });
 
     if (existingUser) {
@@ -137,45 +120,28 @@ export async function SignUp({
     }
 
     const result = await prisma.$transaction(async (prisma) => {
-      const username = `${firstName.toLowerCase()}@${Math.floor(
-        Math.random() * 1000
-      )}`;
-
+      const username = `${firstName.toLowerCase()}@${Math.floor(Math.random() * 1000)}`;
       const hashedPassword = await bcrypt.hash(username, 12);
+      
+      const dateOfBirthDate = new Date(dateOfBirth + "T00:00:00Z");
+      
+      const userData = {
+        firstName,
+        middleName,
+        surname,
+        slug,
+        dateOfBirth: dateOfBirthDate,
+        role,
+        schoolId,
+        username,
+        password: hashedPassword,
+        ...(role === ROLES.Teacher ? { 
+          email: email || null,
+          invitationId 
+        } : {}),
+      };
 
-      let user: any;
-      if (role === ROLES.Teacher) {
-        user = await prisma.user.create({
-          data: {
-            firstName,
-            middleName,
-            surname,
-            slug,
-            dateOfBirth: new Date(dateOfBirth),
-            role,
-            schoolId,
-            email,
-            invitationId,
-            username,
-            password: hashedPassword,
-          },
-        });
-      } else {
-        user = await prisma.user.create({
-          data: {
-            firstName,
-            middleName,
-            surname,
-            slug,
-            dateOfBirth: new Date(dateOfBirth),
-            role,
-            schoolId,
-            username,
-            password: hashedPassword,
-          },
-        });
-      }
-      return user;
+      return await prisma.user.create({ data: userData });
     });
 
     return {
@@ -185,15 +151,12 @@ export async function SignUp({
       error: null,
       status: 201,
     };
-  } catch (error) {
-    console.log(error);
+  } catch (error : any) {
+    console.error('SignUp error:', error);
     return {
       message: "Signup failed!",
       success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : "An error occurred,something went wrong.",
+      error: error instanceof Error ? error.message : "An error occurred, something went wrong.",
       status: 500,
     };
   }
