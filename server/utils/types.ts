@@ -1,30 +1,32 @@
 export type dropDownProps = {
-    id: string,
-    label: string,
-    options?: options[],
-    placeholder: string,
-    onChange?: () => Promise<void>,
-    value?: string
-}
+  id: string;
+  label: string;
+  options?: options[];
+  placeholder: string;
+  onChange?: () => Promise<void>;
+  value?: string;
+};
 
 export type options = {
-    label: string,
-    value: string
-}
+  label: string;
+  value: string;
+};
 
-export enum OPTION {
-    Teacher = "teacher",
-    Student = "student",
+export enum ROLES {
+  Teacher = "teacher",
+  Student = "student",
 }
 
 export interface ToggleGroupProps {
-    id: string;
-    label: string;
-    selectedValue?: OPTION;
-    onChange?: (value: OPTION) => void;
+  id: string;
+  label: string;
+  selectedValue?: ROLES;
+  onChange?: (value: ROLES) => void;
 }
 
 export enum Role {
-    Teacher = "Teacher",
-    Student = "Student"
+  Teacher = "Teacher",
+  Student = "Student",
 }
+
+

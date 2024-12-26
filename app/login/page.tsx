@@ -1,33 +1,54 @@
 "use client";
-import { use, useState } from "react";
+import { useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import Link from "next/link";
+import { login } from "@/server/actions/user";
+import { useToast } from "@/components/ui/ToastProvider";
+import { ROLES } from "@/server/utils/types";
 
 const Login = () => {
-  const [role, setRole] = useState<string>("student");
+  const [role, setRole] = useState<ROLES>(ROLES.Student);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { showToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await login({ username, password });
+      if (response.success) {
+        showToast(response.message, "success");
+      } else {
+        showToast(response.error, "error");
+      }
+    } catch (error: any) {
+      showToast(error.message, "error");
+    }
+  };
   return (
     <>
       <AuthHeader />
       <div className="w-full min-h-screen py-10 bg-gradient-to-b from-yellow-50 via-white to-blue-300">
         <div className="w-full h-full flex justify-center items-center flex-col">
-          <form className="bg-white bg-opacity-60 border border-black shadow-lg rounded-2xl p-8 w-11/12 max-w-4xl">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white bg-opacity-60 border border-black shadow-lg rounded-2xl p-8 w-11/12 max-w-4xl"
+          >
             <div className="flex items-center gap-2 justify-center">
               <button
                 type="button"
-                onClick={() => setRole("student")}
+                onClick={() => setRole(ROLES.Student)}
                 className={`linear duration-300 py-2 border border-black shadow-md rounded-3xl px-6 ${
-                  role === "student" ? "bg-red-400 text-white" : ""
+                  role === ROLES.Student ? "bg-red-400 text-white" : ""
                 }`}
               >
                 विद्यार्थी
               </button>
               <button
                 type="button"
-                onClick={() => setRole("teacher")}
+                onClick={() => setRole(ROLES.Teacher)}
                 className={`linear duration-300 py-2 border border-black shadow-md rounded-3xl px-6 ${
-                  role === "teacher" ? "bg-red-400 text-white" : ""
+                  role === ROLES.Teacher ? "bg-red-400 text-white" : ""
                 } `}
               >
                 शिक्षक
@@ -58,6 +79,7 @@ const Login = () => {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -85,6 +107,7 @@ const Login = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
               </div>

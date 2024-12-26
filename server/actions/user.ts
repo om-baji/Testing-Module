@@ -5,6 +5,18 @@ import { registerSchema, RegisterSchemaTypes } from "../models/registerSchema";
 import prisma from "../utils/db";
 import bcrypt from "bcryptjs";
 import { signIn } from "next-auth/react";
+import { ROLES } from "../utils/types";
+
+type RegisterUserType = {
+  firstName: string;
+  middleName: string;
+  surname: string;
+  dateOfBirth: Date | string;
+  role: ROLES;
+  schoolId: string;
+  email: string;
+  invitationId: string | null;
+};
 
 export async function login({ username, password }: loginSchemaTypes) {
   try {
@@ -24,6 +36,7 @@ export async function login({ username, password }: loginSchemaTypes) {
       return {
         message: "Check your username!",
         success: false,
+        status: 404,
         error: "User not found with the given username",
       };
     }
@@ -34,6 +47,7 @@ export async function login({ username, password }: loginSchemaTypes) {
       return {
         message: "Invalid credentials!",
         success: false,
+        status: 401,
         error: "Incorrect username or password.",
       };
     }
@@ -41,6 +55,7 @@ export async function login({ username, password }: loginSchemaTypes) {
     return {
       message: "Login successful!",
       user,
+      status: 200,
       success: true,
       error: null,
     };
@@ -49,13 +64,16 @@ export async function login({ username, password }: loginSchemaTypes) {
     return {
       message: "Login unsuccessful!",
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      status: 500,
+      error:
+        error instanceof Error
+          ? error.message
+          : "An error occurred,something went wrong.",
     };
   }
 }
 
 export async function SignUp({
-  username,
   firstName,
   middleName,
   surname,
@@ -64,33 +82,49 @@ export async function SignUp({
   schoolId,
   email,
   invitationId,
-  password,
-}: RegisterSchemaTypes) {
+}: RegisterUserType) {
+  const slug =
+    `${firstName}-${middleName}-${surname}-${dateOfBirth}-${schoolId}`.toLowerCase();
+
   try {
-    const validation = registerSchema.safeParse({
-      username,
-      firstName,
-      middleName,
-      surname,
-      dateOfBirth,
-      role,
-      schoolId,
-      email,
-      invitationId,
-      password,
-    });
+    let validation: any;
+
+    if (role === ROLES.Teacher) {
+      validation = registerSchema.safeParse({
+        firstName,
+        middleName,
+        surname,
+        slug,
+        dateOfBirth,
+        role,
+        schoolId,
+        email: email,
+        invitationId: invitationId,
+      });
+    } else {
+      validation = registerSchema.safeParse({
+        firstName,
+        middleName,
+        surname,
+        slug,
+        dateOfBirth,
+        role,
+        schoolId,
+      });
+    }
 
     if (!validation.success) {
       return {
         message: "Validation failed!",
         success: false,
         error: validation.error.message,
+        status: 400,
       };
     }
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        email,
+        slug,
       },
     });
 
@@ -98,47 +132,69 @@ export async function SignUp({
       return {
         message: "User already exists, login instead.",
         success: false,
+        status: 409,
       };
     }
 
     const result = await prisma.$transaction(async (prisma) => {
-      const hash = await bcrypt.hash(password, 12);
+      const username = `${firstName.toLowerCase()}@${Math.floor(
+        Math.random() * 1000
+      )}`;
 
-      const user = await prisma.user.create({
-        data: {
-          username,
-          firstName,
-          middleName,
-          surname,
-          dateOfBirth,
-          role,
-          schoolId,
-          email,
-          invitationId,
-          password: hash,
-        },
-      });
+      const hashedPassword = await bcrypt.hash(username, 12);
 
-      const status = await signIn("credentials", { username, password, redirect: false });
-
-      if (!status?.ok) {
-        throw new Error(status?.error as string);
+      let user: any;
+      if (role === ROLES.Teacher) {
+        user = await prisma.user.create({
+          data: {
+            firstName,
+            middleName,
+            surname,
+            slug,
+            dateOfBirth: new Date(dateOfBirth),
+            role,
+            schoolId,
+            email,
+            invitationId,
+            username,
+            password: hashedPassword,
+          },
+        });
+      } else {
+        user = await prisma.user.create({
+          data: {
+            firstName,
+            middleName,
+            surname,
+            slug,
+            dateOfBirth: new Date(dateOfBirth),
+            role,
+            schoolId,
+            username,
+            password: hashedPassword,
+          },
+        });
       }
       return user;
     });
 
     return {
-      message: "User created and logged in successfully!",
+      message: "User registered successfully!",
       user: result,
       success: true,
       error: null,
+      status: 201,
     };
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return {
-      message: "Signup unsuccessful!",
+      message: "Signup failed!",
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      error:
+        error instanceof Error
+          ? error.message
+          : "An error occurred,something went wrong.",
+      status: 500,
     };
   }
 }
