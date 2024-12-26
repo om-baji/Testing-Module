@@ -1,10 +1,12 @@
 import { registerSchema } from '@/server/models/registerSchema';
-import prisma from '@/server/utils/db'; 
+import userModel from '@/server/models/userModel';
+import { connectDb } from '@/server/utils/db';
 import { ROLES } from '@/server/utils/types';
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
+  await connectDb();
   const {
     firstName,
     middleName,
@@ -40,9 +42,9 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: { slug },
-    });
+    const existingUser = await userModel.findOne({
+      slug
+    })
 
     if (existingUser) {
       return NextResponse.json({
@@ -89,7 +91,9 @@ export async function POST(req: Request) {
 
     console.log(userData)
     
-    const result = await prisma.user.create({ data: userData });
+    const result = await userModel.create(userData)
+
+    await result.save()
 
     return NextResponse.json({
       message: "User registered successfully!",

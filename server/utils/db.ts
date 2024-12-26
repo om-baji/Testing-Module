@@ -1,15 +1,24 @@
-import { PrismaClient } from '@prisma/client'
+import mongoose from "mongoose";
 
-const prismaClientSingleton = () => {
-  return new PrismaClient()
-}
+type ConnectionObject = {
+  isConnected?: number;
+};
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+const connection: ConnectionObject = {};
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+export const connectDb = async () => {
+  if (connection.isConnected) {
+    console.log("Already connected to DB!");
+  }
 
-export default prisma
+  try {
+    const db = await mongoose.connect(process.env.DATABASE_URL as string);
+    connection.isConnected = db.connections[0].readyState;
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
+    console.log("Database connected!");
+  } catch (error) {
+    console.log("Database connection failed!");
+    console.error(error);
+    process.exit(1);
+  }
+};
