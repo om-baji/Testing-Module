@@ -20,12 +20,17 @@ const NewPassword = () => {
       return;
     }
     try {
-      // Add your password reset logic here
+      
       showToast("Password reset successful!", "success");
       router.push("/login");
-    } catch (error: any) {
-      showToast(error.message, "error");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showToast(error.message || "An error occurred", "error");
+      } else {
+        showToast("An unknown error occurred", "error");
+      }
     }
+    
   };
 
   return (
