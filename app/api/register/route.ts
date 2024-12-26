@@ -1,6 +1,6 @@
 
 import { registerSchema } from '@/server/models/registerSchema';
-import userModel from '@/server/models/userModel';
+import userModel from '@/server/models/user.model';
 import { connectDb } from '@/server/utils/db';
 import { ROLES } from '@/server/utils/types';
 import bcrypt from 'bcrypt';
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
         password: hashedPassword,
       };
     }
-    
+
     console.log(userData)
     
     const result = await userModel.create(userData)

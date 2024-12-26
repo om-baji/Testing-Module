@@ -2,10 +2,9 @@ import bcrypt from "bcryptjs";
 import NextAuth, { AuthOptions, Session, SessionStrategy } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import userModel from "../models/userModel";
+import userModel from "../models/user.model";
 import { connectDb } from "./db";
 import { ROLES } from "./types";
-
 
 type CredentialsType = {
   username: string;
@@ -36,7 +35,6 @@ export const authOptions: AuthOptions = {
             .select("_id username password role")
             .lean();
 
-
           if (!user) throw new Error("User not found!");
 
           const isValid = await bcrypt.compare(
@@ -49,8 +47,7 @@ export const authOptions: AuthOptions = {
           return {
             id: user._id.toString(),
             username: user.username as string,
-            role : user.role
-
+            role: user.role,
           };
         } catch (error) {
           console.warn("Authorization error");
@@ -65,10 +62,10 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }): Promise<JWT> {
       if (user) {
-        (token.username = user.username), (token.id = user.id);
+        token.username = user.username;
+        token.id = user.id;
         token.role = user.role as ROLES;
-
-      }
+      } 
       return token;
     },
     async session({ session, token }): Promise<Session> {

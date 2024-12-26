@@ -17,6 +17,8 @@ interface User extends Document,Schema {
     createdAt : Date;
     updatedAt : Date;
     isActive : boolean;
+    resetPasswordToken? : string;
+    resetPasswordExpires? : Date;
 }
 
 const userSchema: Schema<User> = new Schema<User>({
@@ -108,9 +110,15 @@ const userSchema: Schema<User> = new Schema<User>({
     isActive: { 
       type: Boolean, 
       default: true 
+    },
+    resetPasswordExpires : {
+      type : Date
+    },
+    resetPasswordToken : {
+      type : String
     }
   });
 
-const userModel = mongoose.model("User",userSchema)
+const userModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User" , userSchema);
 
 export default userModel;
