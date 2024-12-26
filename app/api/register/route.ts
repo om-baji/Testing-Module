@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       }, { status: 409 });
     }
 
-    const username = `${firstName.toLowerCase()}@${Math.floor(Math.random() * 1000)}`;
+    const username = `${firstName.toLowerCase()}@${Math.floor(Math.random() * 10000)}`;
     const hashedPassword = await bcrypt.hash(username, 12);
     
     const dateOfBirthDate = new Date(dateOfBirth + "T00:00:00Z");
