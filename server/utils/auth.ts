@@ -45,7 +45,7 @@ export const authOptions : AuthOptions = {
 
           return {
             id: user.id,
-            username: user.username,
+            username: user.username as string,
           };
         } catch (error) {
           console.warn("Authorization error");
