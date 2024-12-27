@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import { useToast } from "@/components/ui/ToastProvider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const NewPassword = () => {
   const { data: session } = useSession();
+  const query = useSearchParams()
+  const token = query.get("token");
   const user = session?.user;
   console.log(user);
   const [password, setPassword] = useState<string>("");
@@ -20,7 +22,17 @@ const NewPassword = () => {
       return;
     }
     try {
-      
+      const res = await fetch("/api/forgot/verify", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token, newPassword: password })
+      })
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message)
+
       showToast("Password reset successful!", "success");
       router.push("/login");
     } catch (error: unknown) {
@@ -30,7 +42,7 @@ const NewPassword = () => {
         showToast("An unknown error occurred", "error");
       }
     }
-    
+
   };
 
   return (
