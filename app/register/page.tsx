@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import Link from "next/link";
 import { useToast } from "@/components/ui/ToastProvider";
-import { ROLE } from "@/server/utils/types";
+import { ROLE } from "@/utils/types";
 
 const Register = () => {
   const [role, setRole] = useState<ROLE>(ROLE.Student);

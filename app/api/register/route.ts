@@ -1,9 +1,9 @@
-import { registerSchema } from "@/server/models/registerSchema";
-import User from "@/server/models/user.model";
-import { ROLE } from "@/server/utils/types";
+import { registerSchema } from "@/models/registerSchema";
+import User from "@/models/user.model";
+import { ROLE } from "@/utils/types";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
-import connectDB from "@/server/utils/db";
+import connectDB from "@/utils/db";
 
 export async function POST(req: Request) {
   const {
