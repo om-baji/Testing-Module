@@ -5,6 +5,37 @@ import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { connectDb } from "@/server/utils/db";
 
+/**
+ * @swagger
+ * /api/register:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               middleName:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *               role:
+ *                 type: string
+ *                 enum: [teacher, student]
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Bad request
+ */
 export async function POST(req: Request) {
   await connectDb();
   const {
