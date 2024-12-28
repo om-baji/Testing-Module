@@ -12,7 +12,7 @@ export const connectDb = async () => {
   }
 
   try {
-    const db = await mongoose.connect(process.env.DATABASE_URL as string);
+    const db = await mongoose.connect(process.env.MONGO_URI as string);
     connection.isConnected = db.connections[0].readyState;
 
     console.log("Database connected!");

@@ -1,16 +1,16 @@
 {
-    "name": "Pariksha Mitra",
-    "build": {
-      "dockerfile": "Dockerfile"
-    },
-    "postCreateCommand": "npm install",
-    "remoteUser": "root",
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "esbenp.prettier-vscode",
-          "dbaeumer.vscode-eslint"
-        ]
-      }
+  "name": "Pariksha Mitra",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "npm install",
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
     }
   }
+}
