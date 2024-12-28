@@ -1,6 +1,6 @@
 import { registerSchema } from "@/server/models/registerSchema";
 import User from "@/server/models/user.model";
-import { ROLES } from "@/server/utils/types";
+import { ROLE } from "@/server/utils/types";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import connectDB from "@/server/utils/db";
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       dateOfBirth,
       role,
       schoolId,
-      ...(role === ROLES.Teacher ? { email, invitationId } : {}),
+      ...(role === ROLE.Teacher ? { email, invitationId } : {}),
     };
 
     const validation = registerSchema.safeParse(validationData);
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
         schoolId,
         username,
         password: hashedPassword,
-        ...(role === ROLES.Teacher
+        ...(role === ROLE.Teacher
           ? {
               email: email || null,
               invitationId,

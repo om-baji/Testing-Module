@@ -13,21 +13,21 @@ model User {
   middleName   String?
   slug         String   @unique
   surname      String
-  email        String?  
+  email        String?
   username     String   @unique
   password     String
   dateOfBirth  DateTime
   name         String?
   image        String?
-  invitationId String? 
+  invitationId String?
   schoolId     String?
-  role         Roles
+  role         ROLE
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   isActive     Boolean  @default(false)
 }
 
-enum Roles {
+enum ROLE {
   teacher
   student
 }

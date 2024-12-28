@@ -8,9 +8,9 @@ export async function middleware(request: NextRequest) {
 
   if (
     token &&
-    (url.pathname.startsWith("/") ||
-      url.pathname.startsWith("/login") ||
-      url.pathname.startsWith("/register"))
+    (url.pathname === "/" ||
+      url.pathname === "/login" ||
+      url.pathname === "/register")
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }

@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import Link from "next/link";
 import { useToast } from "@/components/ui/ToastProvider";
-import { ROLES } from "@/server/utils/types";
+import { ROLE } from "@/server/utils/types";
 
 const Register = () => {
-  const [role, setRole] = useState<ROLES>(ROLES.Student);
+  const [role, setRole] = useState<ROLE>(ROLE.Student);
   const [firstName, setFirstName] = useState<string>("");
   const [middleName, setMiddleName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
@@ -20,7 +20,7 @@ const Register = () => {
   useEffect(() => {
     const today = new Date();
     today.setFullYear(today.getFullYear() - 10);
-    const formattedDate = today.toISOString().split('T')[0];
+    const formattedDate = today.toISOString().split("T")[0];
     setDateOfBirth(formattedDate);
   }, []);
 
@@ -32,7 +32,7 @@ const Register = () => {
       return;
     }
 
-    if (role === ROLES.Teacher && (!email.trim() || !invitationId.trim())) {
+    if (role === ROLE.Teacher && (!email.trim() || !invitationId.trim())) {
       showToast("Teachers must provide email and invitation code", "error");
       return;
     }
@@ -42,11 +42,11 @@ const Register = () => {
         firstName: firstName.trim(),
         middleName: middleName.trim(),
         surname: surname.trim(),
-        dateOfBirth: new Date(dateOfBirth).toISOString().split('T')[0],
+        dateOfBirth: new Date(dateOfBirth).toISOString().split("T")[0],
         role,
         schoolId,
-        email: role === ROLES.Teacher ? email.trim() : null,
-        invitationId: role === ROLES.Teacher ? invitationId.trim() : null
+        email: role === ROLE.Teacher ? email.trim() : null,
+        invitationId: role === ROLE.Teacher ? invitationId.trim() : null,
       };
 
       const response = await fetch("/api/register", {
@@ -61,7 +61,7 @@ const Register = () => {
 
       if (data.success) {
         showToast(data.message, "success");
-        showToast(`Your username: ${data.user?.username || ''}`, "success");
+        showToast(`Your username: ${data.user?.username || ""}`, "success");
       } else {
         showToast(data.message || "Registration failed", "error");
       }
@@ -127,7 +127,7 @@ const Register = () => {
                       setDateOfBirth(selectedDate);
                     }
                   }}
-                  max={new Date().toISOString().split('T')[0]}
+                  max={new Date().toISOString().split("T")[0]}
                 />
               </div>
 
@@ -136,17 +136,19 @@ const Register = () => {
                 <div className="flex">
                   <button
                     type="button"
-                    onClick={() => setRole(ROLES.Teacher)}
-                    className={`flex-1 linear duration-300 p-3 border border-black shadow-md rounded-l-xl ${role === ROLES.Teacher && "bg-red-400 text-white"
-                      }`}
+                    onClick={() => setRole(ROLE.Teacher)}
+                    className={`flex-1 linear duration-300 p-3 border border-black shadow-md rounded-l-xl ${
+                      role === ROLE.Teacher && "bg-red-400 text-white"
+                    }`}
                   >
                     शिक्षक
                   </button>
                   <button
                     type="button"
-                    onClick={() => setRole(ROLES.Student)}
-                    className={`flex-1 linear duration-300 p-3 border border-black shadow-md rounded-r-xl ${role === ROLES.Student && "bg-red-400 text-white"
-                      } `}
+                    onClick={() => setRole(ROLE.Student)}
+                    className={`flex-1 linear duration-300 p-3 border border-black shadow-md rounded-r-xl ${
+                      role === ROLE.Student && "bg-red-400 text-white"
+                    } `}
                   >
                     विद्यार्थी
                   </button>
@@ -169,7 +171,7 @@ const Register = () => {
                 </div>
               </div>
 
-              {role === ROLES.Teacher && (
+              {role === ROLE.Teacher && (
                 <>
                   <div className="flex flex-col">
                     <label className="text-xl font-light mb-2">ई-मेल</label>

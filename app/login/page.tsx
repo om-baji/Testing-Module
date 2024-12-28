@@ -2,14 +2,13 @@
 import { useEffect, useState } from "react";
 import AuthHeader from "@/components/ui/AuthHeader";
 import Link from "next/link";
-import { login } from "@/server/actions/user";
 import { useToast } from "@/components/ui/ToastProvider";
-import { ROLES } from "@/server/utils/types";
+import { ROLE } from "@/server/utils/types";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 
 const Login = () => {
-  const [role, setRole] = useState<ROLES>(ROLES.Student);
+  const [role, setRole] = useState<ROLE>(ROLE.Student);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { showToast } = useToast();
@@ -30,11 +29,9 @@ const Login = () => {
       });
 
       if (res?.error) {
-        if (res?.url) {
-          router.replace("/dashboard");
-        }
         showToast("Invalid credentials", "error");
       } else {
+        router.push("/dashboard");
         showToast("Successfully Loggedn In.", "success");
       }
     } catch (error: any) {
@@ -80,18 +77,18 @@ const Login = () => {
               <div className="flex items-center gap-2 justify-center">
                 <button
                   type="button"
-                  onClick={() => setRole(ROLES.Student)}
+                  onClick={() => setRole(ROLE.Student)}
                   className={`linear duration-300 py-2 border border-black shadow-md rounded-3xl px-6 ${
-                    role === ROLES.Student ? "bg-red-400 text-white" : ""
+                    role === ROLE.Student ? "bg-red-400 text-white" : ""
                   }`}
                 >
                   विद्यार्थी
                 </button>
                 <button
                   type="button"
-                  onClick={() => setRole(ROLES.Teacher)}
+                  onClick={() => setRole(ROLE.Teacher)}
                   className={`linear duration-300 py-2 border border-black shadow-md rounded-3xl px-6 ${
-                    role === ROLES.Teacher ? "bg-red-400 text-white" : ""
+                    role === ROLE.Teacher ? "bg-red-400 text-white" : ""
                   } `}
                 >
                   शिक्षक

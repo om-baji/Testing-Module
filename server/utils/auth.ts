@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import User from "@/server/models/user.model";
 import { JWT } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
-import { Role, ROLES } from "./types";
+import { ROLE } from "./types";
 import connectDB from "@/server/utils/db";
 
 type CredentialsType = {
@@ -46,7 +46,7 @@ export const authOptions: AuthOptions = {
           return {
             id: user.id,
             username: user.username,
-            role: user.role,
+            role: user.role as ROLE,
           };
         } catch (error) {
           console.warn("Authorization error");
@@ -61,8 +61,9 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }): Promise<JWT> {
       if (user) {
-        (token.username = user.username), (token.id = user.id);
-        token.role = user.role as Role;
+        token.username = user.username;
+        token.id = user.id;
+        token.role = user.role as ROLE;
       }
       return token;
     },
