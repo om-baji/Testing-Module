@@ -4,10 +4,11 @@
     "dockerfile": "Dockerfile"
   },
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
   ],
-  "postCreateCommand": "npm install",
-  "remoteUser": "root",
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.ssh && chmod 700 /home/vscode/.ssh && chmod 600 /home/vscode/.ssh/* && git config --global core.editor \"code --wait\"",
+  "remoteUser": "vscode",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -32,7 +33,12 @@
         "VisualStudioExptTeam.intellicode-api-usage-examples",
         "VisualStudioExptTeam.vscodeintellicode",
         "ritwickdey.LiveServer"
-      ]
+      ],
+      "settings": {
+        "git.enabled": true,
+        "git.terminalAuthentication": true,
+        "github.gitAuthentication": true
+      }
     }
   }
 }
