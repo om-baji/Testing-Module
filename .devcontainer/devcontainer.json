@@ -9,7 +9,26 @@
     "vscode": {
       "extensions": [
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "developer2006.svg-gallery",
+        "Postman.postman-for-vscode",
+        "shd101wyy.markdown-preview-enhanced",
+        "ms-vsliveshare.vsliveshare",
+        "ChakrounAnas.turbo-console-log",
+        "dzhavat.bracket-pair-toggler",
+        "Orta.vscode-jest",
+        "ms-vscode.vscode-typescript-next",
+        "streetsidesoftware.code-spell-checker",
+        "adpyke.codesnap",
+        "ms-azuretools.vscode-docker",
+        "mhutchie.git-graph",
+        "donjayamanne.githistory",
+        "firsttris.vscode-jest-runner",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "ritwickdey.LiveServer"
       ]
     }
   }
