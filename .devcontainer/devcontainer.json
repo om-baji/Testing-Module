@@ -1,14 +1,12 @@
 {
   "name": "Pariksha Mitra",
   "build": {
-    "dockerfile": "Dockerfile"
+    "dockerfile": "Dockerfile",
+    "context": ".."
   },
-  "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
-  ],
-  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.ssh && chmod 700 /home/vscode/.ssh && chmod 600 /home/vscode/.ssh/* && git config --global core.editor \"code --wait\"",
-  "remoteUser": "vscode",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
+  "workspaceFolder": "/app",
+  "remoteUser": "node",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -16,29 +14,19 @@
         "dbaeumer.vscode-eslint",
         "GitHub.copilot",
         "GitHub.copilot-chat",
-        "developer2006.svg-gallery",
         "Postman.postman-for-vscode",
-        "shd101wyy.markdown-preview-enhanced",
-        "ms-vsliveshare.vsliveshare",
-        "ChakrounAnas.turbo-console-log",
-        "dzhavat.bracket-pair-toggler",
-        "Orta.vscode-jest",
-        "ms-vscode.vscode-typescript-next",
-        "streetsidesoftware.code-spell-checker",
-        "adpyke.codesnap",
-        "ms-azuretools.vscode-docker",
-        "mhutchie.git-graph",
-        "donjayamanne.githistory",
-        "firsttris.vscode-jest-runner",
-        "VisualStudioExptTeam.intellicode-api-usage-examples",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "ritwickdey.LiveServer"
-      ],
-      "settings": {
-        "git.enabled": true,
-        "git.terminalAuthentication": true,
-        "github.gitAuthentication": true
-      }
+        "bradlc.vscode-tailwindcss",
+        "formulahendry.auto-rename-tag",
+        "dsznajder.es7-react-js-snippets",
+        "ms-vscode.vscode-typescript-next"
+      ]
     }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "postCreateCommand": "npm install",
+  "remoteEnv": {
+    "NODE_ENV": "development"
   }
 }
