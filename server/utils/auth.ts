@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
+
 import NextAuth, { AuthOptions, Session, SessionStrategy } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import userModel from "../models/user.model";
 import { connectDb } from "./db";
-import { ROLES } from "./types";
+import { ROLE } from "./types";
 
 type CredentialsType = {
   username: string;
@@ -45,9 +46,11 @@ export const authOptions: AuthOptions = {
           if (!isValid) throw new Error("Wrong password!");
 
           return {
+
             id: user._id.toString(),
             username: user.username as string,
             role: user.role,
+
           };
         } catch (error) {
           console.warn("Authorization error");
@@ -64,7 +67,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.username = user.username;
         token.id = user.id;
-        token.role = user.role as ROLES;
+        token.role = user.role as ROLE;
       } 
       return token;
     },

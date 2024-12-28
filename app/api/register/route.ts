@@ -1,10 +1,9 @@
-
-import { registerSchema } from '@/server/models/registerSchema';
-import userModel from '@/server/models/user.model';
-import { connectDb } from '@/server/utils/db';
-import { ROLES } from '@/server/utils/types';
-import bcrypt from 'bcrypt';
-import { NextResponse } from 'next/server';
+import { registerSchema } from "@/server/models/registerSchema";
+import userModel from "@/server/models/user.model";
+import { ROLE } from "@/server/utils/types";
+import bcrypt from "bcrypt";
+import { NextResponse } from "next/server";
+import { connectDb } from "@/server/utils/db";
 
 export async function POST(req: Request) {
   await connectDb();
@@ -33,7 +32,7 @@ export async function POST(req: Request) {
       dateOfBirth,
       role,
       schoolId,
-      ...(role === ROLES.Teacher ? { email, invitationId } : {}),
+      ...(role === ROLE.Teacher ? { email, invitationId } : {}),
     };
 
     const validation = registerSchema.safeParse(validationData);
@@ -50,8 +49,8 @@ export async function POST(req: Request) {
     }
 
     const existingUser = await userModel.findOne({
-      slug
-    })
+      slug,
+    });
 
     if (existingUser) {
       return NextResponse.json(
@@ -82,7 +81,7 @@ export async function POST(req: Request) {
         schoolId,
         username,
         password: hashedPassword,
-        ...(role === ROLES.Teacher
+        ...(role === ROLE.Teacher
           ? {
               email: email || null,
               invitationId,
@@ -103,12 +102,11 @@ export async function POST(req: Request) {
       };
     }
 
-    console.log(userData)
-    
-    const result = await userModel.create(userData)
+    console.log(userData);
 
-    await result.save()
+    const result = await userModel.create(userData);
 
+    await result.save();
 
     return NextResponse.json(
       {
