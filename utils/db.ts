@@ -19,7 +19,11 @@ export const connectDb = async () => {
   } catch (error) {
     console.log("Database connection failed!");
     console.error(error);
-    process.exit(1);
+    if (process.env.NODE_ENV !== "test") {
+      process.exit(1); // Only exit in non-test environments
+    } else {
+      throw new Error("Failed to connect to the database");
+    }
   }
 };
 

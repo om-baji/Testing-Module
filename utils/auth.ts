@@ -1,10 +1,3 @@
-<<<<<<< HEAD:server/utils/auth.ts
-=======
-import NextAuth, { AuthOptions, Session, SessionStrategy } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import User from "@/models/user.model";
-import { JWT } from "next-auth/jwt";
->>>>>>> 0a960c41575aa137b0013b81457f5ed07aeb745d:utils/auth.ts
 import bcrypt from "bcryptjs";
 
 import NextAuth, { AuthOptions, Session, SessionStrategy } from "next-auth";
@@ -13,10 +6,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import userModel from "../models/user.model";
 import { connectDb } from "./db";
 import { ROLE } from "./types";
-<<<<<<< HEAD:server/utils/auth.ts
-=======
-import connectDB from "@/utils/db";
->>>>>>> 0a960c41575aa137b0013b81457f5ed07aeb745d:utils/auth.ts
 
 type CredentialsType = {
   username: string;

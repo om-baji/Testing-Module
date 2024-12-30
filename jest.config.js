@@ -10,7 +10,8 @@ const customJestConfig = {
   testMatch: ['**/*.test.ts', '**/*.test.tsx'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1'
-  }
+  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 };
 
 module.exports = createJestConfig(customJestConfig);

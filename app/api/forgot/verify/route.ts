@@ -1,5 +1,5 @@
-import userModel from "@/server/models/user.model";
-import { connectDb } from "@/server/utils/db";
+import userModel from "@/models/user.model";
+import { connectDb } from "@/utils/db";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 

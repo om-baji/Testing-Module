@@ -4,7 +4,7 @@ import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 const ApiDocs = () => {
-  const [spec, setSpec] = useState<any>(null);
+  const [spec, setSpec] = useState(null);
 
   useEffect(() => {
     fetch("/api/swagger")
