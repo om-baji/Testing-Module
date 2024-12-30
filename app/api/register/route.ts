@@ -1,9 +1,9 @@
-import { registerSchema } from "@/server/models/registerSchema";
-import userModel from "@/server/models/user.model";
-import { ROLE } from "@/server/utils/types";
+import { registerSchema } from "@/models/registerSchema";
+import userModel from "@/models/user.model";
+import { ROLE } from "@/utils/types";
+import { connectDb } from "@/utils/db";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
-import { connectDb } from "@/server/utils/db";
 
 /**
  * @swagger

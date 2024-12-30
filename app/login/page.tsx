@@ -2,7 +2,7 @@
 import AuthHeader from "@/components/ui/AuthHeader";
 import Link from "next/link";
 import { useToast } from "@/components/ui/ToastProvider";
-import { ROLE } from "@/server/utils/types";
+import { ROLE } from "@/utils/types";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
