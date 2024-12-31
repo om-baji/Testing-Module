@@ -99,7 +99,6 @@ export async function POST(req: Request) {
       };
     }
 
-    console.log(userData);
 
     const result = await User.create(userData);
 

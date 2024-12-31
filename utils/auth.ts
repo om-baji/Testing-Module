@@ -34,14 +34,14 @@ export const authOptions: AuthOptions = {
             username: credentials.username,
           }).select("id username password role");
 
-          if (!user) throw new Error("User not found!");
+          if (!user) return null;
 
           const isValid = await bcrypt.compare(
             credentials.password,
             user.password
           );
 
-          if (!isValid) throw new Error("Wrong password!");
+          if (!isValid) return null;
 
           return {
             id: user.id,
