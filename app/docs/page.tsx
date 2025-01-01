@@ -1,19 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useFetchSwagger } from "@/utils/hooks/useFetchSwagger";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 const ApiDocs = () => {
-  const [spec, setSpec] = useState(null);
+  const { spec, isLoading } = useFetchSwagger();
 
-  useEffect(() => {
-    fetch("/api/swagger")
-      .then((response) => response.json())
-      .then((data) => setSpec(data));
-  }, []);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!spec) {
-    return <div>Loading...</div>;
+    return <div>Failed to load Swagger spec</div>;
   }
 
   return <SwaggerUI spec={spec} />;
