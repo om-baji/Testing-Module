@@ -29,10 +29,10 @@ const Login = () => {
       });
 
       if (res?.error) {
-        showToast("Invalid credentials", "error");
+        showToast("अवैध वापरकर्तानाव किंवा पासवर्ड", "error");
       } else {
         router.push("/dashboard");
-        showToast("Successfully Loggedn In.", "success");
+        showToast("लॉगिन यशस्वी झाले", "success");
       }
     } catch (error: any) {
       showToast(error.message, "error");
