@@ -4,20 +4,24 @@ import { NextRequest, NextResponse } from "next/server";
 
 /**
  * @swagger
- * /api/school/get:
- *   get:
+ * /api/school/deleteSchool:
+ *   delete:
  *     tags: [School]
- *     summary: Get all schools or a specific school by ID
- *     parameters:
- *       - in: query
- *         name: id
- *         schema:
- *           type: string
- *         required: false
- *         description: ID of the school to retrieve
+ *     summary: Delete a school by ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
  *     responses:
  *       200:
- *         description: List of all schools or the specified school
+ *         description: School deleted successfully
+ *       400:
+ *         description: ID is required
  *       404:
  *         description: School not found
  *       500:
@@ -25,24 +29,19 @@ import { NextRequest, NextResponse } from "next/server";
  */
 
 
-export async function GET(req: NextRequest) {
-    await connectDb();
-  
+export async function DELETE(req: NextRequest) {
     try {
-      const { searchParams } = new URL(req.url);
-      const id = searchParams.get("id");
+      await connectDb();
+  
+      const { id } = await req.json();
   
       if (!id) {
-        const schools = await SchoolModel.find();
-        return NextResponse.json({
-          message: "All schools",
-          schools,
-        });
+        return NextResponse.json({ message: "ID is required" }, { status: 400 });
       }
   
-      const school = await SchoolModel.findById(id);
+      const deletedSchool = await SchoolModel.findByIdAndDelete(id);
   
-      if (!school) {
+      if (!deletedSchool) {
         return NextResponse.json(
           { message: "School not found" },
           { status: 404 }
@@ -50,17 +49,15 @@ export async function GET(req: NextRequest) {
       }
   
       return NextResponse.json({
-        message: "School found",
-        school,
-      }, {
-        status : 201
+        message: "School Deleted",
+        success: true,
       });
     } catch (error) {
       if (error instanceof Error) {
         return NextResponse.json(
           {
             message: error.message,
-            error,
+            error: {},
           },
           { status: 500 }
         );
@@ -75,3 +72,4 @@ export async function GET(req: NextRequest) {
       );
     }
   }
+  
