@@ -1,15 +1,14 @@
-import React from 'react';
-import Sidebar from '@/components/ui/Sidebar/Sidebar';
-import TestHeader from '@/components/TestHeader';
-import { ErrorBoundary } from 'react-error-boundary';
-import { QuestionsProvider } from '@/context/QuestionsContext';
-"use client";
+"use client"
+import React from "react";
+import Sidebar from "@/components/ui/Sidebar/Sidebar";
+import TestHeader from "@/components/TestHeader";
+import { QuestionsProvider } from "@/context/QuestionsContext";
 
 const TestPageLayout: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   if (!children) {
-    throw new Error('TestPageLayout requires children');
+    throw new Error("TestPageLayout requires children");
   }
 
   return (

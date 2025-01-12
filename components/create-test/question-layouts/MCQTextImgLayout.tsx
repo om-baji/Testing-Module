@@ -1,6 +1,6 @@
+"use client"
 import ImgMCQ from '@/components/create-test/ImgMCQ';
 import React, { ChangeEvent } from 'react';
-"use client";
 
 
 interface MCQTextImgLayoutProps {

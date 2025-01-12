@@ -1,7 +1,7 @@
+"use client"
 import ImageUpload from './ImageUpload';
 import React from 'react';
 import { useQuestions } from '@/context/QuestionsContext';
-"use client";
 
 interface ImageOption {
   url: string;

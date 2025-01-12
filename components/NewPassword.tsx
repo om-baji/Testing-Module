@@ -1,9 +1,9 @@
+"use client"
 import AuthHeader from '@/components/ui/AuthHeader';
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/components/ui/ToastProvider';
-"use client";
 
 const NewPassword = () => {
   const { data: session } = useSession();

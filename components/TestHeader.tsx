@@ -1,9 +1,9 @@
+"use client"
 import Dropdown from '@/components/Dropdown/Dropdown';
 import Image from 'next/image';
 import React, { useCallback, useMemo } from 'react';
 import { QuestionType } from '@/utils/types';
 import { useQuestions } from '@/context/QuestionsContext';
-("use client");
 
 export default function TestHeader() {
   const {

@@ -1,7 +1,7 @@
+"use client"
 import ImageUpload from '@/components/create-test/ImageUpload';
 import ImgMCQ from '@/components/create-test/ImgMCQ';
 import React, { ChangeEvent } from 'react';
-"use client";
 
 
 interface MCQImgImgLayoutProps {

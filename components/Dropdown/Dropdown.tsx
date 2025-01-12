@@ -1,8 +1,8 @@
+"use client"
 import AddOptionModal from './AddOptionModal';
 import clsx from 'clsx';
 import { DropdownProps } from '@/utils/types';
 import '@/styles/scrollbar.css';
-("use client");
 import React, {
   FC,
   useState,

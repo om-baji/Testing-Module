@@ -1,8 +1,8 @@
+"use client"
 import QuestionBankHeader from '@/components/QuestionBankHeader';
 import React from 'react';
 import Sidebar from '@/components/ui/Sidebar/Sidebar';
 import { SelectionProvider } from '@/context/SelectionContext';
-"use client";
 
 const QuestionBankPageLayout: React.FC<{
   children: React.ReactNode;

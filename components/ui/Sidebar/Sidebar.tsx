@@ -1,6 +1,6 @@
+"use client"
 import React from 'react';
 import SidebarItem from './SidebarItem';
-"use client";
 
 
 interface SidebarProps {

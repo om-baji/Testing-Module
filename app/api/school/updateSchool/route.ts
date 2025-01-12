@@ -1,4 +1,4 @@
-import SchoolModel from '@/models/schoolModel';
+import SchoolModel from '@/models/schoolSchema';
 import { connectDb } from '@/utils/db';
 import { NextRequest, NextResponse } from 'next/server';
 import { schoolSchema } from '@/models/schoolSchema';

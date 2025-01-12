@@ -1,9 +1,9 @@
+"use client"
 import React, { useContext, useMemo, useState } from 'react';
 import { QuestionList } from '@/components/question-bank/QuestionList';
 import { QuestionProps } from '@/utils/types';
 import { SelectionContext } from '@/context/SelectionContext';
 import '@/styles/scrollbar.css';
-("use client");
 
 const initialQuestions: QuestionProps[] = [
   {

@@ -1,9 +1,9 @@
+"use client"
 import MatchThePairs from '@/components/create-test/match-the-pairs/MatchThePairs';
 import MCQ from '@/components/create-test/MCQ';
 import React, { ChangeEvent } from 'react';
 import TrueFalseComponent from '@/components/create-test/TrueFalse';
 import { QuestionType } from '@/utils/types';
-"use client";
 
 /**
  * General Question Layout (MCQ, True/False, Match The Pairs, Subjective Answer, etc.)

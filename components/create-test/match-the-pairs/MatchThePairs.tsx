@@ -1,6 +1,6 @@
+"use client"
 import Field from '@/components/create-test/match-the-pairs/Field';
 import React, { useCallback, useState } from 'react';
-"use client";
 
 interface MatchThePairsProps {
   editable: boolean;

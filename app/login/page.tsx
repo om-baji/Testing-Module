@@ -1,3 +1,4 @@
+"use client"
 import AuthHeader from '@/components/ui/AuthHeader';
 import Link from 'next/link';
 import { ROLE } from '@/utils/types';
@@ -5,7 +6,6 @@ import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/ToastProvider';
-"use client";
 
 const Login: React.FC = () => {
   const [role, setRole] = useState<ROLE>(ROLE.Student);

@@ -1,3 +1,4 @@
+"use client"
 import AuthHeader from '@/components/ui/AuthHeader';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,7 +13,6 @@ import { ROLE } from '@/utils/types';
 import { TransitionProps } from '@mui/material/transitions';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/ToastProvider';
-"use client";
 
 
 interface RegisterFormState {

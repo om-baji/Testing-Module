@@ -1,7 +1,7 @@
+"use client"
 import ImageUpload from '@/components/create-test/ImageUpload';
 import MCQ from '@/components/create-test/MCQ';
 import React, { ChangeEvent } from 'react';
-"use client";
 
 interface MCQImgTextLayoutProps {
   questionIndex: number;

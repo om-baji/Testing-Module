@@ -1,3 +1,4 @@
+"use client"
 import Dropdown from '@/components/Dropdown/Dropdown';
 import React, {
   ChangeEvent,
@@ -13,7 +14,6 @@ import { MCQTextImgLayout } from '@/components/create-test/question-layouts/MCQT
 import { NavButton } from '@/components/create-test/NavButton';
 import { QuestionType } from '@/utils/types';
 import { useQuestions } from '@/context/QuestionsContext';
-"use client";
 
 const Page: React.FC = () => {
   const {

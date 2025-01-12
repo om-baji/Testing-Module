@@ -1,7 +1,7 @@
+"use client"
 import SwaggerUI from 'swagger-ui-react';
 import { useFetchSwagger } from '@/utils/hooks/useFetchSwagger';
 import 'swagger-ui-react/swagger-ui.css';
-("use client");
 
 // Add explicit return type
 const ApiDocs: React.FC = () => {

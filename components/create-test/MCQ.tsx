@@ -1,6 +1,6 @@
+"use client"
 import React, { ChangeEvent } from 'react';
 import { useQuestions } from '@/context/QuestionsContext';
-("use client");
 
 // Expand the interface to include all necessary props
 interface MCQProps {

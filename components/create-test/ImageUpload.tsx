@@ -1,5 +1,5 @@
+"use client"
 import React, { ChangeEvent, useCallback, useState } from 'react';
-("use client");
 
 interface ImageUploadProps {
   image: string | null;

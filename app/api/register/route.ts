@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import SchoolModel from '@/models/schoolModel';
+import SchoolModel from '@/models/schoolSchema';
 import userModel from '@/models/user.model';
 import { ApiError, handleApiError } from '@/utils/api-error';
 import { connectDb } from '@/utils/db';
