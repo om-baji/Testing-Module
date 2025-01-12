@@ -15,30 +15,6 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/ToastProvider';
 
 
-interface RegisterFormState {
-  role: ROLE;
-  firstName: string;
-  middleName: string;
-  surname: string;
-  dateOfBirth: string;
-  email: string;
-  schoolId: string;
-  invitationId: string;
-  username: string;
-}
-
-const initialState: RegisterFormState = {
-  role: ROLE.Student,
-  firstName: "",
-  middleName: "",
-  surname: "",
-  dateOfBirth: "",
-  email: "",
-  schoolId: "",
-  invitationId: "",
-  username: ""
-};
-
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement },
   ref: React.Ref<unknown>

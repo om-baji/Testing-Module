@@ -46,7 +46,7 @@ const Dropdown: FC<DropdownProps> = ({
   const [showModal, setShowModal] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLSelectElement>(null);
 
   // Keep selected in sync with controlled props or defaultValue changes
   useEffect(() => {
@@ -166,15 +166,6 @@ const Dropdown: FC<DropdownProps> = ({
     [options, onAddOption]
   );
 
-  const handleSelect = useCallback(
-    (value: string | number) => {
-      onSelect?.(value);
-      setSelected(value);
-      setIsOpen(false);
-    },
-    [onSelect]
-  );
-
   // Rendered options
   const renderedOptions = useMemo(() => {
     return finalOptions.map((option, index) => {
@@ -183,19 +174,19 @@ const Dropdown: FC<DropdownProps> = ({
       const isAddOptionText = allowAddOption && index === 0;
 
       return (
-        <li
+        <option
           key={`${option}-${index}`}
-          role="option"
-          aria-selected={isSelected}
+          value={option.toString()}
           onClick={() => handleOptionClick(option, index)}
+          onKeyDown={(e) =>
+            e.key === "Enter" && handleOptionClick(option, index)
+          }
           onMouseEnter={() => setHighlightedIndex(index)}
           className={clsx(
             "cursor-pointer text-lg",
-            isSelected
-              ? "bg-blue-100"
-              : isHighlighted
-              ? "bg-blue-50"
-              : "bg-white",
+            isSelected && "bg-blue-100",
+            !isSelected && isHighlighted && "bg-blue-50",
+            !isSelected && !isHighlighted && "bg-white",
             "hover:bg-blue-50",
             index !== finalOptions.length - 1 && "border-b border-gray-200",
             "px-4 py-2",
@@ -203,7 +194,7 @@ const Dropdown: FC<DropdownProps> = ({
           )}
         >
           {option}
-        </li>
+        </option>
       );
     });
   }, [
@@ -241,7 +232,7 @@ const Dropdown: FC<DropdownProps> = ({
       >
         <span className="mr-2 flex-grow text-xl">{label}</span>
         <div className="w-[80%] h-9 bg-white text-lg rounded-lg flex items-center justify-center text-black mr-2 overflow-hidden whitespace-nowrap text-ellipsis">
-          {selected !== null ? selected : "-"}
+          {selected ?? "-"}
         </div>
 
         <svg
@@ -268,15 +259,15 @@ const Dropdown: FC<DropdownProps> = ({
 
       {/* Dropdown menu */}
       {isOpen && (
-        <ul
+        <select
           ref={listRef}
-          role="listbox"
+          size={5}
           id={id ? `${id}-listbox` : "dropdown-listbox"}
           className="absolute thin-scrollbar left-0 mt-1 w-full bg-white text-black text-center rounded-[20px] shadow-lg z-10 max-h-52 overflow-y-auto"
           onKeyDown={handleKeyDown}
         >
           {renderedOptions}
-        </ul>
+        </select>
       )}
 
       {/* Separated Modal Component */}
