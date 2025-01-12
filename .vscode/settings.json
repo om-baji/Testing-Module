@@ -16,6 +16,7 @@
     "githistory",
     "intellicode",
     "laila",
+    "maxlength",
     "mhutchie",
     "mikestead",
     "mockingoose",
@@ -37,5 +38,8 @@
     "विषय",
     "शाळा",
     "स्वाध्याय"
-  ]
+  ],
+  "editor.formatOnSave": true,
+  "typescript.extension.sortImports.sortOnSave": true,
+  "editor.codeActions.triggerOnFocusChange": true
 }
