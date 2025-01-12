@@ -20,7 +20,7 @@ const Field: React.FC<FieldProps> = ({
   const items = ["a", "b", "c", "d"];
 
   return (
-    <div
+    <section
       className={`
         flex flex-col px-6 py-4 mx-auto w-full 
         text-xl text-center text-black bg-white 
@@ -29,32 +29,17 @@ const Field: React.FC<FieldProps> = ({
         ${!editable ? "opacity-50 pointer-events-none" : ""}
         ${className}
       `}
-      role="region"
       aria-label={`${title} field`}
-      aria-disabled={!editable}
     >
-      <div 
-        className="self-center" 
-        role="heading" 
-        aria-level={2}
-      >
-        {title}
-      </div>
+      <h2 className="self-center">{title}</h2>
       {items.map((item) => (
-        <div
+        <button
           key={item}
-          onClick={() => onConnect(item)}
-          className={`cursor-pointer ${
+          onClick={() => editable && onConnect(item)}
+          className={`cursor-pointer w-full border-none bg-transparent ${
             activeItem === item ? "bg-gray-200" : ""
           }`}
-          role="button"
-          tabIndex={editable ? 0 : -1} // Remove from tab order if not editable
-          aria-disabled={!editable} // Accessibility attribute
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              if (editable) onConnect(item);
-            }
-          }}
+          disabled={!editable}
         >
           <FieldItem
             id={`${title}-${item}`}
@@ -64,11 +49,10 @@ const Field: React.FC<FieldProps> = ({
             onChange={(value) => onValueChange(item, value)}
             isActive={activeItem === item}
             onSelect={() => onConnect(item)}
-            
           />
-        </div>
+        </button>
       ))}
-    </div>
+    </section>
   );
 };
 

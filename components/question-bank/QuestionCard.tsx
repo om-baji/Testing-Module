@@ -13,10 +13,14 @@ export const QuestionCard: React.FC<QuestionProps & { icon?: React.ReactNode }> 
   const showAddQuestion = !description;
 
   return (
-    <div
+    <button
       onClick={onClick}
-      role="button"
-      aria-selected={isSelected}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick();
+        }
+      }}
+      aria-pressed={isSelected}
       aria-label={showAddQuestion ? "Add new question" : `Question ${questionNumber}`}
       className={` 
         rozha-one-regular flex flex-wrap gap-5 justify-between items-center pr-6 w-full bg-white rounded-3xl border border-solid shadow-lg border-zinc-400 max-md:pr-5 max-md:max-w-full
@@ -95,6 +99,6 @@ export const QuestionCard: React.FC<QuestionProps & { icon?: React.ReactNode }> 
           </button>
         )}
       </div>
-    </div>
+    </button>
   );
 };

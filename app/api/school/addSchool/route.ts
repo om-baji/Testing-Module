@@ -1,7 +1,6 @@
-import SchoolModel from '@/models/schoolSchema';
-import { connectDb } from '@/utils/db';
-import { NextRequest, NextResponse } from 'next/server';
-import { schoolSchema } from '@/models/schoolSchema';
+import SchoolModel, { schoolSchemaZod } from "@/models/schoolSchema";
+import { connectDb } from "@/utils/db";
+import { NextRequest, NextResponse } from "next/server";
 
 /**
  * @swagger
@@ -45,7 +44,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const validation = schoolSchema.safeParse(body);
+    const validation = schoolSchemaZod.safeParse(body);
 
     if (!validation.success) {
       return NextResponse.json(

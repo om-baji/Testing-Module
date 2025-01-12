@@ -50,22 +50,26 @@ const Page: React.FC = () => {
 
   // Handler for changing the question type
   const handleQuestionTypeChange = useCallback(
-    (value: string | number, dropdownId: string) => {
+    async (value: string | number, dropdownId: string) => {
       if (dropdownId === "dropdown-2") {
-        const updatedQuestions = [...questions];
-        updatedQuestions[selectedQuestionIndex] = {
-          ...currentQuestion,
-          type: value as QuestionType,
-          // You could reset content here or partially reset
-          content: {
-            questionText: "",
-            description: "",
-            options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-            correctAnswerIndex: null,
-            image: "", // Initialize image field
-          },
-        };
-        setQuestions(updatedQuestions);
+        setIsLoading(true);
+        try {
+          const updatedQuestions = [...questions];
+          updatedQuestions[selectedQuestionIndex] = {
+            ...currentQuestion,
+            type: value as QuestionType,
+            content: {
+              questionText: "",
+              description: "",
+              options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+              correctAnswerIndex: null,
+              image: "",
+            },
+          };
+          setQuestions(updatedQuestions);
+        } finally {
+          setIsLoading(false);
+        }
       }
     },
     [questions, selectedQuestionIndex, setQuestions, currentQuestion]
@@ -86,16 +90,28 @@ const Page: React.FC = () => {
   );
 
   // Handlers for question fields
-  const handleQuestionTextChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    updateQuestionField(selectedQuestionIndex, "questionText", e.target.value);
-  }, [selectedQuestionIndex, updateQuestionField]);
+  const handleQuestionTextChange = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      updateQuestionField(
+        selectedQuestionIndex,
+        "questionText",
+        e.target.value
+      );
+    },
+    [selectedQuestionIndex, updateQuestionField]
+  );
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     updateQuestionField(selectedQuestionIndex, "description", e.target.value);
   };
 
-  const handleImageChange = (image: string) => {
-    updateQuestionField(selectedQuestionIndex, "image", image);
+  const handleImageChange = async (image: string) => {
+    setIsLoading(true);
+    try {
+      updateQuestionField(selectedQuestionIndex, "image", image);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleImageRemove = () => {
@@ -151,14 +167,18 @@ const Page: React.FC = () => {
                 key={index}
                 label={button.label}
                 bgColor={button.bgColor}
-                onClick={() => {
-                  if (button.label === "EDIT") {
-                    setIsEditing(true);
-                  } else if (button.label === "SAVE") {
-                    setIsEditing(false);
-                  } else if (button.label === "DELETE") {
-                    // Handle delete action
-                    console.log("DELETE clicked");
+                onClick={async () => {
+                  setIsLoading(true);
+                  try {
+                    if (button.label === "EDIT") {
+                      setIsEditing(true);
+                    } else if (button.label === "SAVE") {
+                      setIsEditing(false);
+                    } else if (button.label === "DELETE") {
+                      // Handle delete action
+                    }
+                  } finally {
+                    setIsLoading(false);
                   }
                 }}
               />
@@ -174,7 +194,7 @@ const Page: React.FC = () => {
           {/* Render the appropriate layout based on question type */}
           {(() => {
             try {
-              switch (currentQuestion.type as QuestionType) {
+              switch (currentQuestion.type) {
                 case "MCQ (IMG-Text)":
                   return (
                     <MCQImgTextLayout
@@ -188,7 +208,7 @@ const Page: React.FC = () => {
                       onQuestionTextChange={handleQuestionTextChange}
                       onImageChange={handleImageChange}
                       onImageRemove={handleImageRemove}
-                      editable={isEditing} 
+                      editable={isEditing}
                     />
                   );
 
@@ -197,13 +217,13 @@ const Page: React.FC = () => {
                     <MCQImgImgLayout
                       questionIndex={selectedQuestionIndex}
                       questionDescription={
-                        currentQuestion.content.description || ""
+                        currentQuestion.content.description ?? ""
                       }
-                      image={currentQuestion.content.image || ""}
+                      image={currentQuestion.content.image ?? ""}
                       onDescriptionChange={handleDescriptionChange}
                       onImageChange={handleImageChange}
                       onImageRemove={handleImageRemove}
-                      editable={isEditing} 
+                      editable={isEditing}
                     />
                   );
 
@@ -211,13 +231,13 @@ const Page: React.FC = () => {
                   return (
                     <MCQTextImgLayout
                       questionIndex={selectedQuestionIndex}
-                      questionText={currentQuestion.content.questionText || ""}
+                      questionText={currentQuestion.content.questionText ?? ""}
                       questionDescription={
-                        currentQuestion.content.description || ""
+                        currentQuestion.content.description ?? ""
                       }
                       onQuestionTextChange={handleQuestionTextChange}
                       onDescriptionChange={handleDescriptionChange}
-                      editable={isEditing} 
+                      editable={isEditing}
                     />
                   );
 
@@ -232,7 +252,7 @@ const Page: React.FC = () => {
                       }
                       onQuestionTextChange={handleQuestionTextChange}
                       onDescriptionChange={handleDescriptionChange}
-                      editable={isEditing} 
+                      editable={isEditing}
                     />
                   );
               }
@@ -245,9 +265,7 @@ const Page: React.FC = () => {
       </div>
 
       {/* Nav Buttons (Previous/Next) */}
-      <fieldset
-        className="flex flex-wrap gap-10 self-center mt-4 max-w-full w-[506px] mx-auto items-center justify-center border-none"
-      >
+      <fieldset className="flex flex-wrap gap-10 self-center mt-4 max-w-full w-[506px] mx-auto items-center justify-center border-none">
         <legend className="sr-only">Navigation cards</legend>
         <NavButton
           imageSrc="/nav-left.png"
@@ -267,7 +285,7 @@ const Page: React.FC = () => {
             }
           }}
         />
-      </div>
+      </fieldset>
     </>
   );
 };

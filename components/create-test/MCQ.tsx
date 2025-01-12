@@ -11,17 +11,9 @@ interface MCQProps {
   onOptionChange?: (index: number, value: string) => void;
 }
 
-// Add type for question content
-interface QuestionContent {
-  options: string[];
-  // Add other question-specific fields
-}
 
-// 2. Add proper TypeScript interfaces
-interface Option {
-  text: string;
-  id: number;
-}
+
+
 
 // 1. Extract button styles into a constant
 const optionButtonStyles = (isSelected: boolean) => `
@@ -54,16 +46,18 @@ const MCQOption = ({
   onChange,
 }: MCQOptionProps) => (
   <div className="flex items-center space-x-3">
-    <button
-      type="button"
-      aria-label={`Select option ${option}`}
-      aria-checked={selected}
-      aria-disabled={!editable}
-      role="radio"
-      onClick={() => onSelect(index)}
-      disabled={!editable}
+    <label
       className={optionButtonStyles(selected)}
+      aria-label={`Option ${index + 1}: ${option}`}
     >
+      <input
+        type="radio"
+        name="mcq-options"
+        checked={selected}
+        onChange={() => onSelect(index)}
+        disabled={!editable}
+        className="hidden"
+      />
       <span
         className={`h-6 w-6 rounded-full shadow-sm border-2 ${
           selected
@@ -83,15 +77,14 @@ const MCQOption = ({
           disabled={!editable}
         />
       </span>
-    </button>
+    </label>
   </div>
 );
 
 const MCQ: React.FC<MCQProps> = ({ editable }) => {
   // Add error boundaries
+  const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
   try {
-    const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
-
     // Early return with proper loading state
     if (!questions || questions.length === 0) {
       return <div>Loading questions...</div>;
@@ -133,11 +126,6 @@ const MCQ: React.FC<MCQProps> = ({ editable }) => {
         index;
       setQuestions(updatedQuestions);
     };
-
-    // Extract shared styles
-    const buttonClasses = `px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 ${
-      !editable ? "opacity-50 cursor-not-allowed" : ""
-    }`;
 
     return (
       <div className="space-y-4">

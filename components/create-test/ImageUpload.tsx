@@ -24,9 +24,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isValidFileType = (file: File): boolean => {
-    return acceptedFileTypes.includes(file.type);
-  };
+  
 
   const handleFileChange = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {

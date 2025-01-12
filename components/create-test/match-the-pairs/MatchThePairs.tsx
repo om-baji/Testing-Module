@@ -1,6 +1,6 @@
 "use client"
 import Field from '@/components/create-test/match-the-pairs/Field';
-import React, { useCallback, useState } from 'react';
+import React, {  useState } from 'react';
 
 interface MatchThePairsProps {
   editable: boolean;
@@ -21,8 +21,7 @@ const defaultValues = {
 
 const MatchThePairs: React.FC<MatchThePairsProps> = ({ 
   editable,
-  initialValues,
-  onChange 
+  initialValues 
 }) => {
   const [fieldAValues, setFieldAValues] = useState<Record<string, string>>(
     initialValues?.fieldA || defaultValues

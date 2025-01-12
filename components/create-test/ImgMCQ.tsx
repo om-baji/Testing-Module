@@ -20,6 +20,7 @@ interface ImgMCQProps {
 
 const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
   const [isLoading, setIsLoading] = React.useState(false);
+  const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
 
   const handleError = (error: Error) => {
     console.error("Error in ImgMCQ:", error);
@@ -28,7 +29,6 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
   };
 
   try {
-    const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
 
     if (isLoading) {
       return (
@@ -38,14 +38,13 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
       );
     }
 
-    if (!questions || !questions.length) {
+    if (!questions?.length) {
       return <div>No questions available</div>;
     }
   } catch (error) {
     return handleError(error as Error);
   }
 
-  const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
   const currentQuestion = questions[selectedQuestionIndex];
 
   // If for some reason imageOptions is not defined yet, create a fallback
@@ -99,7 +98,7 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
           null,
         ];
       }
-      updated[selectedQuestionIndex].content.imageOptions![index] = image;
+      updated[selectedQuestionIndex].content.imageOptions[index] = image;
       setQuestions(updated);
     };
 
@@ -123,8 +122,8 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
         >
           <div className="grid grid-cols-2 gap-6">
             {imageOptions.map((imageSrc, index) => (
-              <div
-                key={index}
+              <button
+                key={`image-option-${index}-${imageSrc?.substring(0, 8) ?? 'empty'}`}
                 className={`relative flex flex-col items-center justify-center h-[220px] p-4 bg-white rounded-2xl border shadow-md transition-all duration-300 ease-in-out
                   ${
                     selectedOption === index
@@ -140,8 +139,8 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
                     handleOptionSelect(index);
                   }
                 }}
-                aria-disabled={!editable} // Accessibility attribute
-                tabIndex={editable ? 0 : -1} // Remove from tab order if not editable
+                disabled={!editable}
+                type="button"
               >
                 <span
                   className={`absolute top-2 left-2 h-6 w-6 rounded-full shadow-sm border-2 transition-colors
@@ -161,7 +160,7 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
                     className="overflow-auto"
                   />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>

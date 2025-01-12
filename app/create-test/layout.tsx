@@ -12,17 +12,15 @@ const TestPageLayout: React.FC<{
   }
 
   return (
-    <ErrorBoundary fallback={<div>Something went wrong</div>}>
-      <QuestionsProvider>
-        <div className="relative flex bg-gradient-to-b from-yellow-200 to-blue-300 min-h-screen">
-          <Sidebar />
-          <main className="flex-1 p-6 ml-24">
-            <TestHeader />
-            {children}
-          </main>
-        </div>
-      </QuestionsProvider>
-    </ErrorBoundary>
+    <QuestionsProvider>
+      <div className="relative flex bg-gradient-to-b from-yellow-200 to-blue-300 min-h-screen">
+        <Sidebar />
+        <main className="flex-1 p-6 ml-24">
+          <TestHeader />
+          {children}
+        </main>
+      </div>
+    </QuestionsProvider>
   );
 };
 
