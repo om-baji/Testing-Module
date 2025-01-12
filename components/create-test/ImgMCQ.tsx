@@ -1,27 +1,54 @@
+import ImageUpload from './ImageUpload';
+import React from 'react';
+import { useQuestions } from '@/context/QuestionsContext';
 "use client";
 
-import React from "react";
-import { useQuestions } from "@/context/QuestionsContext";
-import ImageUpload from "./ImageUpload";
+interface ImageOption {
+  url: string;
+  alt?: string;
+  id: number;
+}
 
 interface ImgMCQProps {
-  editable: boolean; // Added editable prop
+  editable: boolean;
+  maxOptions?: number;
+  onOptionSelect?: (index: number) => void;
 }
 
 const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
+  try {
+    const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
+    if (!questions || !questions.length) {
+      return <div>No questions available</div>;
+    }
+  } catch (error) {
+    console.error('Error in ImgMCQ:', error);
+    return <div>Error loading questions</div>;
+  }
+
   const { questions, setQuestions, selectedQuestionIndex } = useQuestions();
   const currentQuestion = questions[selectedQuestionIndex];
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // If for some reason imageOptions is not defined yet, create a fallback
   const imageOptions = currentQuestion.content.imageOptions || [null, null, null, null];
 
   // Handle selecting correct image-based answer
   const handleOptionSelect = (index: number) => {
-    if (!editable) return; // Prevent selection if not editable
+    if (!editable) return;
+    if (index < 0 || index >= imageOptions.length) {
+      console.error('Invalid option index');
+      return;
+    }
 
-    const updated = [...questions];
-    updated[selectedQuestionIndex].content.correctAnswerIndex = index;
-    setQuestions(updated);
+    setIsLoading(true);
+    try {
+      const updated = [...questions];
+      updated[selectedQuestionIndex].content.correctAnswerIndex = index;
+      setQuestions(updated);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Handle changing an individual option’s image
@@ -91,7 +118,7 @@ const ImgMCQ: React.FC<ImgMCQProps> = ({ editable }) => {
 
       <div className="text-lg mt-4">
         <strong>Selected Answer:</strong>{" "}
-        {selectedOption !== null ? `Option ${selectedOption + 1}` : "None"}
+        {selectedOption != null ? `Option ${selectedOption + 1}` : "None"}
       </div>
     </div>
   );

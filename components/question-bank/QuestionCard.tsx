@@ -1,5 +1,5 @@
-import * as React from "react";
-import { QuestionProps } from "@/utils/types";
+import * as React from 'react';
+import { QuestionProps } from '@/utils/types';
 
 export const QuestionCard: React.FC<QuestionProps & { icon?: React.ReactNode }> = ({
   questionNumber,
@@ -15,6 +15,9 @@ export const QuestionCard: React.FC<QuestionProps & { icon?: React.ReactNode }> 
   return (
     <div
       onClick={onClick}
+      role="button"
+      aria-selected={isSelected}
+      aria-label={showAddQuestion ? "Add new question" : `Question ${questionNumber}`}
       className={` 
         rozha-one-regular flex flex-wrap gap-5 justify-between items-center pr-6 w-full bg-white rounded-3xl border border-solid shadow-lg border-zinc-400 max-md:pr-5 max-md:max-w-full
         ${
