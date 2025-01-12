@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Chapter } from "@/models/questionsSchema";
-import {connectDb} from "@/utils/db";
+import { connectDb } from "@/utils/db";
 
 /**
  * @swagger
@@ -34,21 +34,19 @@ import {connectDb} from "@/utils/db";
  *           description: "Failed to retrieve the chapter due to a server error."
  */
 
-interface RouteContext {
-  params: {
-    ChapterId: string;
-  };
-}
-
-export async function GET(req: Request, context: RouteContext) {
+export async function GET(
+  request: Request,
+  context: { params: { ChapterId: string } }
+) {
   try {
     await connectDb();
 
-    if (!context?.params?.ChapterId) {
+    const { ChapterId } = context.params;
+
+    if (!ChapterId) {
       return NextResponse.json({ error: "Invalid ChapterId" }, { status: 400 });
     }
 
-    const { ChapterId } = context.params;
     const singleChapter = await Chapter.findById(ChapterId);
 
     if (!singleChapter) {
