@@ -1,18 +1,43 @@
+import AuthHeader from '@/components/ui/AuthHeader';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import Slide from '@mui/material/Slide';
+import useFetchSchools from '@/utils/hooks/useFetchSchools';
+import { ROLE } from '@/utils/types';
+import { TransitionProps } from '@mui/material/transitions';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/ToastProvider';
 "use client";
-import React, { useEffect, useState } from "react";
-import AuthHeader from "@/components/ui/AuthHeader";
-import Link from "next/link";
-import { useToast } from "@/components/ui/ToastProvider";
-import { ROLE } from "@/utils/types";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { useRouter } from "next/navigation";
-import useFetchSchools from "@/utils/hooks/useFetchSchools";
+
+
+interface RegisterFormState {
+  role: ROLE;
+  firstName: string;
+  middleName: string;
+  surname: string;
+  dateOfBirth: string;
+  email: string;
+  schoolId: string;
+  invitationId: string;
+  username: string;
+}
+
+const initialState: RegisterFormState = {
+  role: ROLE.Student,
+  firstName: "",
+  middleName: "",
+  surname: "",
+  dateOfBirth: "",
+  email: "",
+  schoolId: "",
+  invitationId: "",
+  username: ""
+};
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement },
