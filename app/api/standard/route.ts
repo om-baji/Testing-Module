@@ -1,15 +1,18 @@
-import { NextResponse } from "next/server";
-import {Standard} from "@/models/questionsSchema";
-import {connectDb} from "@/utils/db"
-import { Chapter } from "@/models/questionsSchema";
-import { Exercise } from "@/models/questionsSchema";
-import { Question } from "@/models/questionsSchema";
+import { connectDb } from '@/utils/db';
+import { NextResponse } from 'next/server';
+import {
+  Chapter,
+  Exercise,
+  Question,
+  Standard,
+} from "@/models/questionsSchema";
+
 /**
  * @swagger
  * /api/standard:
  *   get:
  *     summary: Retrieve all classes
- *     description: Fetches a list of all classes (standards) along with their details such as standard name and description.
+ *     description: Fetches a list of all classes (standards) along with their details
  *     tags:
  *       - Standards
  *     responses:
@@ -20,20 +23,12 @@ import { Question } from "@/models/questionsSchema";
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
  *                 classes:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       _id:
- *                         type: string
- *                         example: "676f580403831da26a228fb6"
- *                       standardName:
- *                         type: integer
- *                         example: 2
- *                       description:
- *                         type: string
- *                         example: "Grade 2 - Advanced concepts"
+ *                     $ref: '#/components/schemas/Standard'
  *       400:
  *         description: Failed to retrieve classes.
  *         content:
@@ -44,7 +39,7 @@ import { Question } from "@/models/questionsSchema";
  *                 error:
  *                   type: string
  *                   example: "Failed to retrieve the Classes Information"
- * 
+ *
  *   post:
  *     summary: Create a new standard
  *     description: Adds a new standard (class) with its name and description.
@@ -106,7 +101,7 @@ import { Question } from "@/models/questionsSchema";
  *                 error:
  *                   type: string
  *                   example: "Failed to create standard"
- * 
+ *
  *   delete:
  *     summary: Delete a standard and related data
  *     description: Deletes a specific standard by ID and removes all related chapters, exercises, and questions.
@@ -152,18 +147,19 @@ import { Question } from "@/models/questionsSchema";
  *                   example: "Failed to delete standard and related data"
  */
 
-
 export async function GET() {
-    try {
-        await connectDb();
-        console.log("hello");
-        const classes = await Standard.find();
-        return NextResponse.json({classes}, {status:200}) 
-    } catch {
-        return NextResponse.json({error:"Failed to retrive the Classes Information"},{status: 400});
-    }
+  try {
+    await connectDb();
+    console.log("hello");
+    const classes = await Standard.find();
+    return NextResponse.json({ classes }, { status: 200 });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to retrive the Classes Information" },
+      { status: 400 }
+    );
+  }
 }
-
 
 export async function POST(req: Request) {
   try {
@@ -171,37 +167,46 @@ export async function POST(req: Request) {
     const { standardName, description } = await req.json();
 
     if (!standardName) {
-      return NextResponse.json({ error: "Standard name is required" },{ status: 400 });
+      return NextResponse.json(
+        { error: "Standard name is required" },
+        { status: 400 }
+      );
     }
-    const newStandard = new Standard({standardName,description,});
+    const newStandard = new Standard({ standardName, description });
     const savedStandard = await newStandard.save();
 
-    return NextResponse.json({message: "Standard created successfully", standard: savedStandard },{status: 201 });
+    return NextResponse.json(
+      { message: "Standard created successfully", standard: savedStandard },
+      { status: 201 }
+    );
   } catch (error) {
     console.log("Error creating standard:", error);
-    return NextResponse.json({error: "Failed to create standard" },{status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create standard" },
+      { status: 500 }
+    );
   }
 }
-
 
 export async function DELETE(req: Request) {
   try {
     // Connect to the database
     await connectDb();
 
-    const {searchParams} = new URL(req.url);
+    const { searchParams } = new URL(req.url);
     const standardId = searchParams.get("id");
-    
+
     if (!standardId) {
       return NextResponse.json({ error: "Id not Found" }, { status: 404 });
     }
 
-
     const chaptersToDelete = await Chapter.find({ standard: standardId });
-    const chapterIds = chaptersToDelete.map(chapter => chapter._id);
+    const chapterIds = chaptersToDelete.map((chapter) => chapter._id);
 
-    const exercisesToDelete = await Exercise.find({ chapter: { $in: chapterIds } });
-    const exerciseIds = exercisesToDelete.map(exercise => exercise._id);
+    const exercisesToDelete = await Exercise.find({
+      chapter: { $in: chapterIds },
+    });
+    const exerciseIds = exercisesToDelete.map((exercise) => exercise._id);
 
     await Question.deleteMany({ exercise: { $in: exerciseIds } });
 
@@ -212,14 +217,21 @@ export async function DELETE(req: Request) {
     const deletedStandard = await Standard.findByIdAndDelete(standardId);
 
     if (!deletedStandard) {
-      return NextResponse.json({ error: "Standard not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Standard not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ message: "Standard and related data deleted successfully" }, { status: 200 });
-
+    return NextResponse.json(
+      { message: "Standard and related data deleted successfully" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error deleting standard and related data:", error);
-    return NextResponse.json({ error: "Failed to delete standard and related data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete standard and related data" },
+      { status: 500 }
+    );
   }
 }
-
