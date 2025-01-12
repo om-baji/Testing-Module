@@ -1,8 +1,8 @@
 import React from "react";
 import { FieldItem } from "@/components/create-test/match-the-pairs/FieldItem";
-import { MatchThePairs_FieldProps } from "@/utils/types";
+import { MatchPairsFieldProperties } from "@/utils/types";
 
-interface FieldProps extends MatchThePairs_FieldProps {
+interface FieldProps extends MatchPairsFieldProperties {
   editable: boolean; // Added editable prop
 }
 

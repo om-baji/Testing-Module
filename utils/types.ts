@@ -127,10 +127,10 @@ export type ActionButtonProps = {
 };
 
 /**
- * MatchThePairs_FieldProps: For a 'match the pairs' question type,
+ * MatchPairsFieldProperties: For a 'match the pairs' question type,
  * to handle left and right pairs, connections, etc.
  */
-export interface MatchThePairs_FieldProps {
+export interface MatchPairsFieldProperties {
   title: string;
   isRightSide?: boolean;
   values: Record<string, string>;
@@ -141,9 +141,9 @@ export interface MatchThePairs_FieldProps {
 }
 
 /**
- * MatchThePairs_FieldItemProps: Single item in a 'match the pairs' field.
+ * PairItemFieldProps: Single item in a 'match the pairs' field.
  */
-export interface MatchThePairs_FieldItemProps {
+export interface PairItemFieldProps {
   label: string;
   isRight?: boolean;
   value: string;

@@ -1,7 +1,7 @@
 import React from "react";
-import { MatchThePairs_FieldItemProps } from "@/utils/types";
+import { PairItemFieldProps } from "@/utils/types";
 
-const FieldItemComponent: React.FC<MatchThePairs_FieldItemProps> = ({
+const FieldItemComponent: React.FC<PairItemFieldProps> = ({
   label,
   isRight,
   value,
