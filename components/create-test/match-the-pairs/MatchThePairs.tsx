@@ -1,30 +1,42 @@
+import Field from '@/components/create-test/match-the-pairs/Field';
+import React, { useCallback, useState } from 'react';
 "use client";
-import React from "react";
-import Field from "@/components/create-test/match-the-pairs/Field";
 
 interface MatchThePairsProps {
-  editable: boolean; // Added editable prop
+  editable: boolean;
+  initialValues?: {
+    fieldA: Record<string, string>;
+    fieldB: Record<string, string>;
+    connections: Record<string, string>;
+  };
+  onChange?: (connections: Record<string, string>) => void;
 }
 
-const MatchThePairs: React.FC<MatchThePairsProps> = ({ editable }) => {
-  const [fieldAValues, setFieldAValues] = React.useState<Record<string, string>>({
-    a: "",
-    b: "",
-    c: "",
-    d: "",
-  });
+const defaultValues = {
+  a: "",
+  b: "", 
+  c: "",
+  d: ""
+};
 
-  const [fieldBValues, setFieldBValues] = React.useState<Record<string, string>>({
-    a: "",
-    b: "",
-    c: "",
-    d: "",
-  });
-
-  const [connections, setConnections] = React.useState<Record<string, string>>(
-    {}
+const MatchThePairs: React.FC<MatchThePairsProps> = ({ 
+  editable,
+  initialValues,
+  onChange 
+}) => {
+  const [fieldAValues, setFieldAValues] = useState<Record<string, string>>(
+    initialValues?.fieldA || defaultValues
   );
-  const [activeA, setActiveA] = React.useState<string | null>(null);
+
+  const [fieldBValues, setFieldBValues] = useState<Record<string, string>>(
+    initialValues?.fieldB || defaultValues
+  );
+
+  const [connections, setConnections] = useState<Record<string, string>>(
+    initialValues?.connections || {}
+  );
+  
+  const [activeA, setActiveA] = useState<string | null>(null);
 
   const handleFieldAChange = (key: string, value: string) => {
     if (!editable) return; // Prevent changes if not editable

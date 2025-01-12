@@ -1,9 +1,10 @@
-import React from "react";
-import { FieldItem } from "@/components/create-test/match-the-pairs/FieldItem";
-import { MatchPairsFieldProperties } from "@/utils/types";
+import React from 'react';
+import { FieldItem } from '@/components/create-test/match-the-pairs/FieldItem';
+import { MatchPairsFieldProperties } from '@/utils/types';
 
 interface FieldProps extends MatchPairsFieldProperties {
-  editable: boolean; // Added editable prop
+  editable: boolean;
+  className?: string; // Add optional className prop
 }
 
 const Field: React.FC<FieldProps> = ({
@@ -13,18 +14,30 @@ const Field: React.FC<FieldProps> = ({
   onValueChange,
   onConnect,
   activeItem,
-  editable, // Destructure editable
+  editable,
+  className = '', // Default value
 }) => {
   const items = ["a", "b", "c", "d"];
 
   return (
     <div
-      className={`flex flex-col px-6 py-4 mx-auto w-full text-xl text-center text-black bg-white rounded-3xl border border-black border-solid shadow-lg max-md:px-5 max-md:mt-10 max-md:max-w-full ${
-        !editable ? "opacity-50 pointer-events-none" : ""
-      }`}
-      aria-disabled={!editable} // Accessibility attribute
+      className={`
+        flex flex-col px-6 py-4 mx-auto w-full 
+        text-xl text-center text-black bg-white 
+        rounded-3xl border border-black border-solid shadow-lg 
+        max-md:px-5 max-md:mt-10 max-md:max-w-full
+        ${!editable ? "opacity-50 pointer-events-none" : ""}
+        ${className}
+      `}
+      role="region"
+      aria-label={`${title} field`}
+      aria-disabled={!editable}
     >
-      <div className="self-center" role="heading" aria-level={2}>
+      <div 
+        className="self-center" 
+        role="heading" 
+        aria-level={2}
+      >
         {title}
       </div>
       {items.map((item) => (

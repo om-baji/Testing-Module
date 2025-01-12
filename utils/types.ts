@@ -212,20 +212,6 @@ export interface AddOptionModalProps {
 }
 
 /**
- * Props interface for a customizable action button component.
- * @interface ActionButtonProps
- * 
- * @property {string} label - The text to be displayed on the button
- * @property {string} bgColor - The background color of the button (CSS color value)
- * @property {() => void} [onClick] - Optional callback function triggered when the button is clicked
- */
-export type ActionButtonProps = {
-  label: string;
-  bgColor: string;
-  onClick?: () => void;
-};
-
-/**
  * MatchPairsFieldProperties: For a 'match the pairs' question type,
  * to handle left and right pairs, connections, etc.
  */

@@ -4,10 +4,10 @@ import { useQuestions } from '@/context/QuestionsContext';
 
 // Expand the interface to include all necessary props
 interface MCQProps {
-  options: string[];
-  selectedOption: number | null;
   editable: boolean;
-  onOptionSelect: (index: number) => void;
+  options?: string[];
+  selectedOption?: number | null;
+  onOptionSelect?: (index: number) => void;
   onOptionChange?: (index: number, value: string) => void;
 }
 
