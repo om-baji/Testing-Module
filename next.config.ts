@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
-  swcMinify: false,
   webpack: (config, { dev }) => {
     if (config.cache && !dev) {
       config.cache = false; // Disable caching in production
