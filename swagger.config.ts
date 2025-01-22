@@ -304,4 +304,5 @@ export const swaggerConfig = {
       },
     },
   },
+  apis: ["./app/api/**/*.ts"],
 };
