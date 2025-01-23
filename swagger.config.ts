@@ -309,6 +309,6 @@ export const swaggerConfig = {
     },
   },
   apis: ["./app/api/**/*.ts",
-    "./.next/server/**/*.js"
+    ".next/server/**/*.js"
   ],
 };
