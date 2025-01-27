@@ -1,7 +1,6 @@
 import AuthProvider from "@/utils/AuthProvider";
 import { Laila, Rozha_One, Arya } from "next/font/google";
 import { ToastProvider } from "@/components/ui/ToastProvider";
-import { QuestionsProvider } from "@/context/QuestionsContext";
 import "./globals.css";
 import type { Metadata } from "next";
 // Extract font configurations
@@ -39,13 +38,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        cz-shortcut-listen="true"
         className={`${rozhaOne.variable} ${laila.variable} ${arya.variable} antialiased`}
       >
         <AuthProvider>
-          <ToastProvider>
-            <QuestionsProvider>{children}</QuestionsProvider>
-          </ToastProvider>
+          <ToastProvider>{children}</ToastProvider>
         </AuthProvider>
       </body>
     </html>
