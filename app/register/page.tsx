@@ -236,7 +236,7 @@ const Register = () => {
               <div className="flex flex-col">
                 <label htmlFor="rollNo" className="text-xl font-light mb-2">
                   रोल नंबर
-                </label>
+                </label> 
                 <input
                   id="rollNo"
                   className="p-3 border border-black shadow-md rounded-2xl"
