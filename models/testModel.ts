@@ -45,5 +45,5 @@ const testSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export const Test: mongoose.Model<ITest> =
+export const TestModel: mongoose.Model<ITest> =
   mongoose.models.Test || mongoose.model<ITest>("Test", testSchema);
