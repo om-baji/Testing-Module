@@ -36,7 +36,7 @@ import { NextRequest, NextResponse } from "next/server";
  *                    type: string
  */
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDb();
 
   try {

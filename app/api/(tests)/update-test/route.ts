@@ -2,7 +2,7 @@ import { TestModel } from "@/models/testModel";
 import { TestSchemaType } from "@/models/testSchema";
 import { handleApiError } from "@/utils/api-error";
 import { connectDb } from "@/utils/db";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 /**
  * @swagger
@@ -46,17 +46,22 @@ export async function PUT(req: NextRequest) {
 
     if (!test) throw new Error("Test not found!, check your ID");
 
-    let updateBody: Partial<TestSchemaType>;
-
-    updateBody = await req.json();
+    const updateBody: Partial<TestSchemaType> = await req.json();
 
     await TestModel.updateOne(
       {
-        id,
+        _id: id,
       },
       {
-        updateBody,
+        ...updateBody,
       }
+    );
+
+    return NextResponse.json(
+      {
+        message: "Test updated successfully",
+      },
+      { status: 200 }
     );
   } catch (error) {
     return handleApiError(error instanceof Error ? error.message : error);
