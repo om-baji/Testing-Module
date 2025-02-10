@@ -31,10 +31,7 @@ import { NextRequest, NextResponse } from "next/server";
  *                   type: object
  */
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { testId: string } }
-) {
+export async function GET({ params }: { params: { testId: string } }) {
   await connectDb();
 
   try {
