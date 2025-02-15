@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 import RightArrow from "@/public/test-modal-icons/right-arrow.svg";
-import Image from "next/image";
 import { Rating } from "@mui/material";
+import Image from "next/image";
 
 export interface RowData {
   id: string;
@@ -27,7 +27,7 @@ interface ModalHeaderProps {
 }
 const ModalHeader: React.FC<ModalHeaderProps> = ({ title, onBack }) => (
   <div className="flex flex-row bg-[#9747FF] text-white items-center py-3 px-4 text-wrap w-full relative justify-center">
-    <button onClick={onBack} className="absolute left-0">
+    <button onClick={onBack} className="absolute left-0" type="button">
       <RightArrow />
     </button>
     <h1 className="text-4xl font-bold laila-bold">{title}</h1>
@@ -39,7 +39,6 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({ title, onBack }) => (
  * Displays details about the practice test along with important instructions and a confirm button.
  */
 const PracticeTestModal: React.FC<PracticeTestModalProps> = ({
-  row,
   onConfirm,
   onCancel,
 }) => {
@@ -100,7 +99,7 @@ const PracticeTestModal: React.FC<PracticeTestModalProps> = ({
             <Rating name="feedback-rating" size="large" />
 
             {/* Refresh Button */}
-            <button onClick={() => {}} className="my-2">
+            <button onClick={() => { }} className="my-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

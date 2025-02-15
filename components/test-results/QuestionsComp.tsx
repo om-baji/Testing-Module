@@ -1,13 +1,6 @@
 "use client"
-import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Question } from '@/utils/types';
 
-
-interface props {
-    title: string;
-    questions: Question[]
-}
 
 const DetailedQuestion = () => {
     const router = useRouter();
